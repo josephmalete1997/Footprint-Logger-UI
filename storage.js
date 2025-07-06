@@ -1,7 +1,3 @@
-/**
- * Get activities from local storage
- * @returns {Array} List of activities
- */
 function getActivitiesFromStorage() {
     try {
         const activities = localStorage.getItem(STORAGE_KEY);
@@ -12,10 +8,6 @@ function getActivitiesFromStorage() {
     }
 }
 
-/**
- * Save activity to local storage
- * @param {Object} activity - Activity to save
- */
 function saveActivityToStorage(activity) {
     try {
         const activities = getActivitiesFromStorage();
@@ -27,10 +19,6 @@ function saveActivityToStorage(activity) {
     }
 }
 
-/**
- * Remove activity from local storage
- * @param {number} id - Activity ID to remove
- */
 function removeActivityFromStorage(id) {
     try {
         let activities = getActivitiesFromStorage();
@@ -42,9 +30,6 @@ function removeActivityFromStorage(id) {
     }
 }
 
-/**
- * Clear all activities from local storage
- */
 function clearAllActivities() {
     try {
         localStorage.removeItem(STORAGE_KEY);

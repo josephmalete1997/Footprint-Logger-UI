@@ -1,6 +1,3 @@
-/**
- * Update activity types dropdown based on selected category
- */
 function updateActivityTypes() {
     try {
         const category = document.getElementById('activity-category').value;
@@ -23,9 +20,6 @@ function updateActivityTypes() {
     }
 }
 
-/**
- * Update unit label based on selected activity type
- */
 function updateUnitLabel() {
     try {
         const category = document.getElementById('activity-category').value;
@@ -42,11 +36,6 @@ function updateUnitLabel() {
     }
 }
 
-/**
- * Create DOM element for an activity
- * @param {Object} activity - Activity data
- * @returns {HTMLElement} Activity element
- */
 function createActivityElement(activity) {
     try {
         const activityElement = document.createElement('div');
@@ -73,14 +62,10 @@ function createActivityElement(activity) {
         return activityElement;
     } catch (error) {
         console.error('Error creating activity element:', error);
-        return document.createElement('div'); // Return empty div as fallback
+        return document.createElement('div');
     }
 }
 
-/**
- * Update total emissions display
- * @param {Array} activities - List of activities
- */
 function updateTotalEmissions(activities) {
     try {
         const totalEmissions = activities.reduce((total, activity) => total + activity.co2Emission, 0);
@@ -90,11 +75,6 @@ function updateTotalEmissions(activities) {
     }
 }
 
-/**
- * Display activities in the UI
- * @param {Array} activities - List of activities
- * @param {string} filterCategory - Category to filter by
- */
 function displayActivities(activities, filterCategory = 'all') {
     try {
         const activitiesList = document.getElementById('activities-list');

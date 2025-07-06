@@ -1,19 +1,12 @@
-/**
- * Update the emissions chart with activity data
- * @param {Array} activities - List of activities
- */
 function updateChart(activities) {
     try {
         console.log('Updating chart with', activities.length, 'activities');
-        
         const emissionsByCategory = {};
         
-        // Initialize all categories with zero emissions
         CATEGORIES.forEach(category => {
             emissionsByCategory[category] = 0;
         });
         
-        // Sum up emissions by category
         activities.forEach(activity => {
             if (emissionsByCategory[activity.category] !== undefined) {
                 emissionsByCategory[activity.category] += activity.co2Emission;
@@ -22,22 +15,18 @@ function updateChart(activities) {
         
         console.log('Emissions by category:', emissionsByCategory);
         
-        // Destroy previous chart instance if it exists
         if (window.emissionsChartInstance) {
             window.emissionsChartInstance.destroy();
         }
         
-        // Get category labels and data
         const labels = [];
         const data = [];
         const backgroundColors = [];
         
-        // Add all categories to the chart, even if they have zero emissions
         CATEGORIES.forEach((category, index) => {
             labels.push(CATEGORY_LABELS[category]);
             data.push(emissionsByCategory[category]);
             
-            // Get the color from CSS variables
             const colorVarName = `--${category}-color`;
             const color = getComputedStyle(document.documentElement).getPropertyValue(colorVarName) || '#cccccc';
             backgroundColors.push(color);
@@ -47,7 +36,6 @@ function updateChart(activities) {
         console.log('Chart data:', data);
         console.log('Chart colors:', backgroundColors);
         
-        // Create new chart
         const ctx = document.getElementById('emissions-chart').getContext('2d');
         window.emissionsChartInstance = new Chart(ctx, {
             type: 'pie',

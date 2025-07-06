@@ -1,8 +1,3 @@
-/**
- * Main application script that initializes and coordinates the carbon footprint tracker
- */
-
-// DOM Elements
 const activityForm = document.getElementById('activity-form');
 const categorySelect = document.getElementById('activity-category');
 const activityTypeSelect = document.getElementById('activity-type');
@@ -15,34 +10,25 @@ const filterCategorySelect = document.getElementById('filter-category');
 const clearDataButton = document.getElementById('clear-data');
 const emissionsChart = document.getElementById('emissions-chart');
 
-// Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   try {
-    // Set today's date as default
     const today = new Date().toISOString().split('T')[0];
     dateInput.value = today;
     
-    // Load existing activities
     loadActivities();
     
-    // Set up event listeners
     categorySelect.addEventListener('change', updateActivityTypes);
     activityTypeSelect.addEventListener('change', updateUnitLabel);
     activityForm.addEventListener('submit', addActivity);
     filterCategorySelect.addEventListener('change', filterActivities);
     clearDataButton.addEventListener('click', confirmClearData);
     
-    // Initialize activity types dropdown
     updateActivityTypes();
   } catch (error) {
     console.error('Initialization error:', error);
   }
 });
 
-/**
- * Add a new activity from the form
- * @param {Event} e - Form submit event
- */
 function addActivity(e) {
   e.preventDefault();
   
@@ -84,32 +70,18 @@ function addActivity(e) {
   }
 }
 
-/**
- * Load and display activities from storage
- */
 function loadActivities() {
   try {
     const activities = getActivitiesFromStorage();
-    const filterCategory = filterCategorySelect.value;
-    
-    // Display activities based on filter
+    const filterCategory = filterCategorySelect.value;  
     displayActivities(activities, filterCategory);
-    
-    // Always show total emissions for all activities
     updateTotalEmissions(activities);
-    
-    // Always show all categories in the chart, regardless of filter
-    // This ensures the pie chart always displays all categories
     updateChart(activities);
   } catch (error) {
     console.error('Error loading activities:', error);
   }
 }
 
-/**
- * Delete an activity by ID
- * @param {number} id - Activity ID
- */
 function deleteActivity(id) {
   try {
     removeActivityFromStorage(id);
@@ -120,16 +92,10 @@ function deleteActivity(id) {
   }
 }
 
-/**
- * Filter activities by category
- */
 function filterActivities() {
   loadActivities();
 }
 
-/**
- * Confirm before clearing all data
- */
 function confirmClearData() {
   try {
     if (confirm('Are you sure you want to delete all activities?')) {

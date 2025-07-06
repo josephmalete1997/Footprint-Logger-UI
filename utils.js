@@ -1,8 +1,3 @@
-/**
- * Format a date string to a localized date
- * @param {string} dateString - ISO date string
- * @returns {string} Formatted date
- */
 function formatDate(dateString) {
     try {
         return new Date(dateString).toLocaleDateString();
@@ -12,12 +7,6 @@ function formatDate(dateString) {
     }
 }
 
-/**
- * Calculate percentage of a value from a total
- * @param {number} value - The value
- * @param {number} total - The total
- * @returns {string} Percentage with one decimal place
- */
 function calculatePercentage(value, total) {
     try {
         return total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
@@ -27,11 +16,6 @@ function calculatePercentage(value, total) {
     }
 }
 
-/**
- * Format CO2 value to 2 decimal places
- * @param {number} value - CO2 value
- * @returns {string} Formatted value
- */
 function formatCO2(value) {
     try {
         return parseFloat(value).toFixed(2);

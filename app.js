@@ -92,8 +92,14 @@ function loadActivities() {
     const activities = getActivitiesFromStorage();
     const filterCategory = filterCategorySelect.value;
     
+    // Display activities based on filter
     displayActivities(activities, filterCategory);
+    
+    // Always show total emissions for all activities
     updateTotalEmissions(activities);
+    
+    // Always show all categories in the chart, regardless of filter
+    // This ensures the pie chart always displays all categories
     updateChart(activities);
   } catch (error) {
     console.error('Error loading activities:', error);

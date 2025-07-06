@@ -47,7 +47,7 @@ main {
 
 .container {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
     gap: 2rem;
     margin-bottom: 2rem;
 }

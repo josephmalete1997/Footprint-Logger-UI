@@ -3,97 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footprint Logger | Dashboard</title>
+    <title>Dashboard - Carbon Footprint Logger</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1><i class="fas fa-leaf"></i> Footprint Logger</h1>
-        <p>Track your carbon footprint and make a difference</p>
-    </header>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🌱 Carbon Footprint Dashboard</h1>
+                <div class="user-info">
+                    <span id="username-display">Welcome!</span>
+                    <button onclick="logout()" class="btn btn-outline">Logout</button>
+                </div>
+            </div>
+        </header>
 
-    <main>
-        <section class="container">
-            <div class="add-activity">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Your Total Emissions</h3>
+                <div id="user-total" class="stat-value">0 kg</div>
+            </div>
+            <div class="stat-card">
+                <h3>Global Average</h3>
+                <div id="global-average" class="stat-value">0 kg</div>
+            </div>
+            <div class="stat-card">
+                <h3>This Week</h3>
+                <div id="week-total" class="stat-value">0 kg</div>
+            </div>
+            <div class="stat-card">
+                <h3>Activities Logged</h3>
+                <div id="activity-count" class="stat-value">0</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Add Activity Form -->
+            <div class="card">
                 <h2>Add New Activity</h2>
                 <form id="activity-form">
-                    <div class="form-group">
-                        <label for="activity-category">Category:</label>
-                        <select id="activity-category" required>
-                            <option value="">Select a category</option>
-                            <option value="transport">Transport</option>
-                            <option value="food">Food</option>
-                            <option value="energy">Energy</option>
-                            <option value="other">Other</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activity-category">Category</label>
+                            <select id="activity-category" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-type">Activity Type</label>
+                            <select id="activity-type" required>
+                                <option value="">Select Activity</option>
+                            </select>
+                        </div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="activity-type">Activity Type:</label>
-                        <select id="activity-type" required>
-                            <option value="">Select an activity</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activity-amount">Amount</label>
+                            <input type="number" id="activity-amount" step="0.01" min="0" required>
+                            <small id="unit-label">Enter amount</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-date">Date</label>
+                            <input type="date" id="activity-date" required>
+                        </div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="activity-amount">Amount:</label>
-                        <input type="number" id="activity-amount" min="1" value="1" required>
-                        <span id="unit-label">unit</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="activity-date">Date:</label>
-                        <input type="date" id="activity-date" required>
-                    </div>
-                    
-                    <button type="submit" class="btn">Add Activity</button>
+                    <button type="submit" class="btn btn-primary">Add Activity</button>
                 </form>
             </div>
-            
-            <div class="summary">
-                <h2>Your Carbon Footprint</h2>
-                <div class="total-emissions">
-                    <p>Total CO2 Emissions: <span id="total-co2">0</span> kg</p>
-                </div>
-                <div class="chart-container">
-                    <canvas id="emissions-chart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <section class="container">
-            <div class="activity-log">
-                <h2>Activity Log</h2>
-                <div class="filter-controls">
-                    <label for="filter-category">Filter by:</label>
-                    <select id="filter-category">
-                        <option value="all">All Categories</option>
-                        <option value="transport">Transport</option>
-                        <option value="food">Food</option>
-                        <option value="energy">Energy</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="activities-list" id="activities-list">
-                    <p class="empty-state">No activities logged yet. Add your first activity above!</p>
-                </div>
-                <button id="clear-data" class="btn btn-danger">Clear All Data</button>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <p>&copy; 2025 Footprint Logger | By Joseph Malete</p>
-    </footer>
 
-    <script src="constants.js"></script>
-    <script src="data.js"></script>
-    <script src="utils.js"></script>
-    <script src="storage.js"></script>
-    <script src="ui.js"></script>
-    <script src="chart.js"></script>
-    <script src="app.js"></script>
+            <!-- Charts and Activities -->
+            <div class="content-grid">
+                <!-- Weekly Chart -->
+                <div class="card">
+                    <h3>Weekly Emissions</h3>
+                    <canvas id="weekly-chart"></canvas>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="card">
+                    <h3>Category Breakdown</h3>
+                    <canvas id="category-chart"></canvas>
+                </div>
+
+                <!-- Activities List -->
+                <div class="card full-width">
+                    <div class="card-header">
+                        <h3>Recent Activities</h3>
+                        <div class="filters">
+                            <select id="filter-category">
+                                <option value="all">All Categories</option>
+                            </select>
+                            <button id="clear-data" class="btn btn-danger">Clear All Data</button>
+                        </div>
+                    </div>
+                    <div id="activities-list" class="activities-list">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Leaderboard -->
+                <div class="card">
+                    <h3>🏆 Low-Footprint Leaders</h3>
+                    <div id="leaderboard" class="leaderboard">
+                        <!-- Leaderboard will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="dashboard.js"></script>
 </body>
-</html> 
+</html>

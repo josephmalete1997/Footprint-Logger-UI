@@ -211,6 +211,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     padding: 25px;
     margin-bottom: 20px;
+    max-height: 350px;
 }
 
 .card h2, .card h3 {

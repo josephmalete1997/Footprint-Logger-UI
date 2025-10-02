@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Carbon Footprint Logger</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🌱 Carbon Footprint Dashboard</h1>
+                <div class="user-info">
+                    <span id="username-display">Welcome!</span>
+                    <button onclick="logout()" class="btn btn-outline">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Your Total Emissions</h3>
+                <div id="user-total" class="stat-value">0 kg</div>
+            </div>
+            <div class="stat-card">
+                <h3>Global Average</h3>
+                <div id="global-average" class="stat-value">0 kg</div>
+            </div>
+            <div class="stat-card">
+                <h3>This Week</h3>
+                <div id="week-total" class="stat-value">0 kg</div>
+            </div>
+            <div class="stat-card">
+                <h3>Activities Logged</h3>
+                <div id="activity-count" class="stat-value">0</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Add Activity Form -->
+            <div class="card">
+                <h2>Add New Activity</h2>
+                <form id="activity-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activity-category">Category</label>
+                            <select id="activity-category" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-type">Activity Type</label>
+                            <select id="activity-type" required>
+                                <option value="">Select Activity</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activity-amount">Amount</label>
+                            <input type="number" id="activity-amount" step="0.01" min="0" required>
+                            <small id="unit-label">Enter amount</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-date">Date</label>
+                            <input type="date" id="activity-date" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Activity</button>
+                </form>
+            </div>
+
+            <!-- Charts and Activities -->
+            <div class="content-grid">
+                <!-- Weekly Chart -->
+                <div class="card">
+                    <h3>Weekly Emissions</h3>
+                    <canvas id="weekly-chart" width="300" height="300"></canvas>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="card">
+                    <h3>Category Breakdown</h3>
+                    <canvas id="category-chart"></canvas>
+                </div>
+
+                <!-- Activities List -->
+                <div class="card full-width">
+                    <div class="card-header">
+                        <h3>Recent Activities</h3>
+                        <div class="filters">
+                            <select id="filter-category">
+                                <option value="all">All Categories</option>
+                            </select>
+                            <button id="clear-data" class="btn btn-danger">Clear All Data</button>
+                        </div>
+                    </div>
+                    <div id="activities-list" class="activities-list">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Leaderboard -->
+                <div class="card">
+                    <h3>🏆 Low-Footprint Leaders</h3>
+                    <div id="leaderboard" class="leaderboard">
+                        <!-- Leaderboard will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

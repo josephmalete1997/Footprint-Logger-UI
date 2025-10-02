@@ -6,13 +6,14 @@
     <title>Dashboard - Carbon Footprint Logger</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/062d0051ac.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <h1>🌱 Carbon Footprint Dashboard</h1>
+                <h1><i class="fa-solid fa-leaf"></i> Carbon Footprint Dashboard</h1>
                 <div class="user-info">
                     <span id="username-display">Welcome!</span>
                     <button onclick="logout()" class="btn btn-outline">Logout</button>
@@ -107,7 +108,7 @@
 
                 <!-- Leaderboard -->
                 <div class="card">
-                    <h3>🏆 Low-Footprint Leaders</h3>
+                    <h3><i class="fa-solid fa-trophy"></i> Low-Footprint Leaders</h3>
                     <div id="leaderboard" class="leaderboard">
                         <!-- Leaderboard will be loaded here -->
                     </div>

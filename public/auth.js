@@ -59,7 +59,7 @@ async function login(email, password) {
         if (response.ok) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            window.location.href = './dashboard.html';
+            window.location.href = 'https://josephmalete1997.github.io/Footprint-Logger-UI/public/dashboard.html';
         } else {
             alert(data.error || 'Login failed');
         }
@@ -89,7 +89,7 @@ async function register(username, email, password) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             alert('Registration successful! Welcome!');
-            window.location.href = './dashboard.html';
+            window.location.href = 'https://josephmalete1997.github.io/Footprint-Logger-UI/public/dashboard.html';
         } else {
             alert(data.error || 'Registration failed');
         }
@@ -110,7 +110,7 @@ async function verifyToken(token) {
         });
         
         if (response.ok) {
-            window.location.href = './dashboard.html';
+            window.location.href = 'https://josephmalete1997.github.io/Footprint-Logger-UI/public/dashboard.html';
         } else {
             localStorage.removeItem('token');
             localStorage.removeItem('user');

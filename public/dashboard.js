@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     if (!token) {
-        window.location.href = '/';
+        window.location.href = 'https://josephmalete1997.github.io/Footprint-Logger-UI/public';
         return;
     }
 
@@ -60,10 +60,6 @@ async function initializeDashboard() {
         hideLoading();
     }
 }
-
-// ============================================
-// WEBSOCKET FUNCTIONALITY
-// ============================================
 
 function initializeWebSocket() {
     const token = localStorage.getItem('token');
@@ -130,10 +126,6 @@ function updateConnectionStatus(connected) {
     }
 }
 
-// ============================================
-// INSIGHT FUNCTIONALITY
-// ============================================
-
 function displayRealtimeInsight(insight) {
     if (!insight.hasData) return;
 
@@ -148,7 +140,6 @@ function displayRealtimeInsight(insight) {
 
     alert.classList.add('show');
 
-    // Auto-hide after 10 seconds
     setTimeout(() => {
         alert.classList.remove('show');
     }, 10000);
@@ -261,10 +252,6 @@ function getCategoryIcon(category) {
     };
     return icons[category] || '<i class="fa-solid fa-circle"></i>';
 }
-
-// ============================================
-// WEEKLY GOAL FUNCTIONALITY
-// ============================================
 
 async function loadWeeklyGoal() {
     try {
@@ -384,10 +371,6 @@ async function loadGoalHistory() {
     }
 }
 
-// ============================================
-// EXISTING FUNCTIONALITY (ENHANCED)
-// ============================================
-
 async function loadCarbonData() {
     try {
         const response = await fetch(`${API_BASE}/carbon-data`);
@@ -442,7 +425,6 @@ function updateWeeklyChart(weeklyData) {
         weeklyChart.destroy();
     }
 
-    // Prepare data for last 7 days
     const last7Days = [];
     const emissions = [];
 
@@ -649,12 +631,10 @@ async function addActivity(e) {
         const data = await response.json();
 
         if (response.ok) {
-            // Reset form
             document.getElementById('activity-form').reset();
             document.getElementById('activity-date').value = new Date().toISOString().split('T')[0];
             updateActivityTypes();
 
-            // Reload data
             await Promise.all([
                 loadDashboardData(),
                 loadActivities(),
@@ -831,20 +811,15 @@ function filterActivities() {
 
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
-        // Close WebSocket connection
         if (socket) {
             socket.disconnect();
         }
 
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        window.location.href = '/';
+        window.location.href = 'https://josephmalete1997.github.io/Footprint-Logger-UI/public';
     }
 }
-
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
 
 function showLoading() {
     const loading = document.getElementById('loading');
@@ -863,7 +838,6 @@ function hideLoading() {
 function showToast(message, type = 'info') {
     let container = document.getElementById('toast-container');
 
-    // Create container if it doesn't exist
     if (!container) {
         container = document.createElement('div');
         container.id = 'toast-container';
@@ -888,10 +862,8 @@ function showToast(message, type = 'info') {
 
     container.appendChild(toast);
 
-    // Animate in
     setTimeout(() => toast.classList.add('show'), 10);
 
-    // Remove after 4 seconds
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
@@ -899,7 +871,6 @@ function showToast(message, type = 'info') {
 }
 
 function confettiEffect() {
-    // Simple confetti effect (you can enhance this with a library like canvas-confetti)
     const colors = ['#f56565', '#48bb78', '#4299e1', '#ed8936', '#9f7aea', '#ed64a6'];
     const confettiCount = 50;
 
@@ -915,38 +886,23 @@ function confettiEffect() {
     }
 }
 
-// ============================================
-// KEYBOARD SHORTCUTS
-// ============================================
-
 document.addEventListener('keydown', (e) => {
-    // Ctrl/Cmd + K to focus on activity form
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         document.getElementById('activity-category').focus();
     }
 
-    // Ctrl/Cmd + R to refresh insights
     if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
         e.preventDefault();
         refreshInsight();
     }
 });
 
-// ============================================
-// AUTO-REFRESH (Optional)
-// ============================================
-
-// Auto-refresh dashboard data every 5 minutes
 setInterval(() => {
     console.log('Auto-refreshing dashboard data...');
     loadDashboardData();
     loadWeeklyGoal();
 }, 5 * 60 * 1000);
-
-// ============================================
-// SERVICE WORKER (Optional - for PWA)
-// ============================================
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

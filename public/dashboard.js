@@ -1,4 +1,4 @@
-const API_BASE = 'https://fantastic-goggles-j64x64qqw7v3596-3000.app.github.dev/api';
+const API_BASE = 'https://literate-doodle-w69w69ggj763p5-3000.app.github.dev/api';
 let carbonData = {};
 let weeklyChart = null;
 let categoryChart = null;

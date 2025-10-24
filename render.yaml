@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: footprint-logger-api
+    env: docker
+    plan: starter
+    dockerfilePath: ./backend/Dockerfile
+    buildCommand: docker-compose build api
+    startCommand: docker-compose up api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URL
+        value: ${MONGO_URL}   

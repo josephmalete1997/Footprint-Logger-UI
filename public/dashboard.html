@@ -3,49 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Carbon Footprint Logger</title>
+    <title>Footprint Insight Engine - Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/062d0051ac.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <h1><i class="fa-solid fa-leaf"></i> Carbon Footprint Dashboard</h1>
+                <h1><i class="fa-solid fa-leaf"></i> Footprint Insight Engine</h1>
                 <div class="user-info">
                     <span id="username-display">Welcome!</span>
+                    <div class="connection-status">
+                        <i class="fa-solid fa-circle" id="ws-status"></i>
+                        <span id="ws-text">Connecting...</span>
+                    </div>
                     <button onclick="logout()" class="btn btn-outline">Logout</button>
                 </div>
             </div>
         </header>
 
+        <!-- Real-time Insight Alert -->
+        <div id="insight-alert" class="insight-alert">
+            <div class="alert-header">
+                <h3><i class="fa-solid fa-lightbulb"></i> <span id="alert-title">Smart Insight</span></h3>
+                <button class="close-alert" onclick="closeInsightAlert()">×</button>
+            </div>
+            <p id="alert-message"></p>
+            <div class="alert-tip">
+                <strong>💡 Tip:</strong> <span id="alert-tip"></span>
+            </div>
+            <div class="alert-reduction">
+                <strong>🎯 Potential Reduction:</strong> <span id="alert-reduction"></span> kg CO₂/week
+            </div>
+        </div>
+
+        <!-- Weekly Goal Section -->
+        <div id="weekly-goal-section" class="weekly-goal" style="display: none;">
+            <h2><i class="fa-solid fa-bullseye"></i> Weekly Goal</h2>
+            <div class="goal-content">
+                <div class="goal-info">
+                    <h4>Target Category</h4>
+                    <div class="goal-value" id="goal-category">-</div>
+                </div>
+                <div class="goal-info">
+                    <h4>Target Reduction</h4>
+                    <div class="goal-value" id="goal-target">0 kg</div>
+                </div>
+                <div class="goal-info">
+                    <h4>Baseline</h4>
+                    <div class="goal-value" id="goal-baseline">0 kg</div>
+                </div>
+                <div class="goal-info">
+                    <h4>Current Emission</h4>
+                    <div class="goal-value" id="goal-current">0 kg</div>
+                </div>
+            </div>
+            <div class="goal-tip">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span id="goal-tip-text">-</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-label">Progress</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="goal-progress" style="width: 0%">
+                        <span id="goal-progress-text">0%</span>
+                    </div>
+                </div>
+                <div class="progress-info">
+                    <span id="days-remaining">7 days remaining</span>
+                    <span class="goal-status" id="goal-status">Active</span>
+                </div>
+            </div>
+        </div>
+
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Your Total Emissions</h3>
-                <div id="user-total" class="stat-value">0 kg</div>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="fa-solid fa-cloud"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Your Total Emissions</h3>
+                    <div id="user-total" class="stat-value">0 kg</div>
+                </div>
             </div>
             <div class="stat-card">
-                <h3>Global Average</h3>
-                <div id="global-average" class="stat-value">0 kg</div>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Global Average</h3>
+                    <div id="global-average" class="stat-value">0 kg</div>
+                </div>
             </div>
             <div class="stat-card">
-                <h3>This Week</h3>
-                <div id="week-total" class="stat-value">0 kg</div>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <i class="fa-solid fa-calendar-week"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>This Week</h3>
+                    <div id="week-total" class="stat-value">0 kg</div>
+                </div>
             </div>
             <div class="stat-card">
-                <h3>Activities Logged</h3>
-                <div id="activity-count" class="stat-value">0</div>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Activities Logged</h3>
+                    <div id="activity-count" class="stat-value">0</div>
+                </div>
             </div>
+        </div>
+
+        <!-- Current Insight Card -->
+        <div class="card insight-card">
+            <h2><i class="fa-solid fa-brain"></i> Your Personalized Insight</h2>
+            <div id="current-insight" class="insight-content">
+                <div class="insight-loading">
+                    <i class="fa-solid fa-spinner fa-spin"></i> Analyzing your activity...
+                </div>
+            </div>
+            <button onclick="refreshInsight()" class="btn btn-secondary">
+                <i class="fa-solid fa-refresh"></i> Refresh Insight
+            </button>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
             <!-- Add Activity Form -->
             <div class="card">
-                <h2>Add New Activity</h2>
+                <h2><i class="fa-solid fa-plus-circle"></i> Add New Activity</h2>
                 <form id="activity-form">
                     <div class="form-row">
                         <div class="form-group">
@@ -72,7 +164,9 @@
                             <input type="date" id="activity-date" required>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Activity</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-check"></i> Add Activity
+                    </button>
                 </form>
             </div>
 
@@ -80,29 +174,36 @@
             <div class="content-grid">
                 <!-- Weekly Chart -->
                 <div class="card">
-                    <h3>Weekly Emissions</h3>
-                    <canvas id="weekly-chart" width="300" height="300"></canvas>
+                    <h3><i class="fa-solid fa-chart-line"></i> Weekly Emissions Trend</h3>
+                    <canvas id="weekly-chart"></canvas>
                 </div>
 
                 <!-- Category Breakdown -->
                 <div class="card">
-                    <h3>Category Breakdown</h3>
+                    <h3><i class="fa-solid fa-chart-pie"></i> Category Breakdown</h3>
                     <canvas id="category-chart"></canvas>
                 </div>
 
                 <!-- Activities List -->
                 <div class="card full-width">
                     <div class="card-header">
-                        <h3>Recent Activities</h3>
+                        <h3><i class="fa-solid fa-history"></i> Recent Activities</h3>
                         <div class="filters">
                             <select id="filter-category">
                                 <option value="all">All Categories</option>
                             </select>
-                            <button id="clear-data" class="btn btn-danger">Clear All Data</button>
                         </div>
                     </div>
                     <div id="activities-list" class="activities-list">
                         <!-- Activities will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Goal History -->
+                <div class="card">
+                    <h3><i class="fa-solid fa-history"></i> Goal History</h3>
+                    <div id="goal-history" class="goal-history">
+                        <!-- Goal history will be loaded here -->
                     </div>
                 </div>
 
@@ -120,6 +221,9 @@
     <div id="loading" class="loading hidden">
         <div class="spinner"></div>
     </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="dashboard.js"></script>
 </body>

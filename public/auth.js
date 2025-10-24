@@ -1,4 +1,4 @@
-const API_BASE = 'https://footprint-logger-ui-bvhx.onrender.com';
+const API_BASE = 'https://footprint-logger-ui-bvhx.onrender.com/api';
 
 // Check if user is already logged in
 document.addEventListener('DOMContentLoaded', () => {

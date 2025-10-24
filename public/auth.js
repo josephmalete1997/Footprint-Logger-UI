@@ -1,4 +1,4 @@
-const API_BASE = 'https://literate-doodle-w69w69ggj763p5-3000.app.github.dev/api';
+const API_BASE = 'https://footprint-logger-ui-bvhx.onrender.com';
 
 // Check if user is already logged in
 document.addEventListener('DOMContentLoaded', () => {
